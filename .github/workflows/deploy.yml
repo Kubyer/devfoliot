@@ -15,7 +15,7 @@ jobs:
           command: rm -rf ~/www/*
           host: 3.16.36.57
           username: ubuntu
-          privateKey: ${{ secrets.SSHKEY}}
+          privateKey: ${{ secrets.SSHKEY }}
 
       - name: copy file via ssh key
         uses: appleboy/scp-action@master
