@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: print key
+        env:
+          SSHKEY: ${{ secrets.SSHKEY }}
+        run: echo $SSHKEY
       - name: copy static files
         env:
           SSHKEY: ${{ secrets.SSHKEY }}
