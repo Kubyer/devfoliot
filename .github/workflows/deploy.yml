@@ -1,0 +1,14 @@
+name: Deploy site to AWS EC2
+on:
+  release:
+    types: [created]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        env:
+          - EC2-SSH: ${{ secrets.EC2-SSH}}
+      run: |
+        ssh ubuntu@3.16.36.57/ 'rm -rf ~/www/*'
+        scp * ubutnu@3.16.36.57/~/www
