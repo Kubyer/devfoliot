@@ -9,11 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          echo $SSHKEY
-          echo $SSHKEY >> ~/key.pem
-          chmod 600 ~/key.pem
-          ssh -i ~/key.pem ubuntu@3.16.36.57/ 'rm -rf ~/www/*'
-          scp -i ~/key.pem * ubuntu@3.16.36.57/~/www
-          ssh -i ~/key.pem ubuntu@3.16.36.57/ 'sudo systemctl restart nginx'
+          echo $SSHKEY >> key.pem
+          chmod 600 key.pem
+          ssh -i key.pem ubuntu@3.16.36.57/ 'rm -rf ~/www/*'
+          scp -i key.pem * ubuntu@3.16.36.57/~/www
+          ssh -i key.pem ubuntu@3.16.36.57/ 'sudo systemctl restart nginx'
         env:
           SSHKEY: ${{ secrets.SSHKEY }}
