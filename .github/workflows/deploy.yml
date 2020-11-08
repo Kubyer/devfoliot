@@ -11,12 +11,28 @@ jobs:
       - name: print key
         env:
           SSHKEY: ${{ secrets.SSHKEY }}
-        run: |
-          echo $SSHKEY >> ~/key.pem
-          chmod 600 ~/key.pem
-      - name: copy static files
-        run: |
-          ssh -i ~/key.pem ubuntu@3.16.36.57 'rm -rf ~/www/*'
-          scp -i ~/key.pem * ubuntu@3.16.36.57~/www
-          ssh -i ~/key.pem ubuntu@3.16.36.57 'sudo systemctl restart nginx'
-          rm ~/key.pem
+
+      - name: rm files
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: rm -rf ~/www/*
+          host: 3.16.36.57
+          username: ubuntu
+          privateKey: ${{ secrets.SSHKEY}}
+
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@master
+        with:
+          host: 3.16.36.57
+          username: ubuntu
+          key: ${{ secrets.SSHKEY }}
+          source: "*"
+          target: "/home/ubuntu/www"
+
+      - name: restart nginx
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: sudo systemctl restart nginx
+          host: 3.16.36.57
+          username: ubuntu
+          privateKey: ${{ secrets.SSHKEY}}
